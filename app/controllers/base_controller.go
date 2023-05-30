@@ -31,6 +31,8 @@ type AppConfig struct {
 
 func (s *Server) Initialize(config AppConfig) {
 	s.Router = mux.NewRouter()
+	s.InitializeAppConfig(config)
+	s.InitializeDB()
 }
 
 func (s *Server) InitializeCommand(config AppConfig) {
