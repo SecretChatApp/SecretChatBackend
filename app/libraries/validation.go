@@ -2,37 +2,36 @@ package libraries
 
 import (
 	"backend/app/config"
+	"backend/app/models"
 	"fmt"
-  "strings"
-  "reflect"
-  "backend/app/models"
-  "log"
+	"log"
+	"reflect"
+	"strings"
 
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
-	"github.com/go-playground/validator"
 	"github.com/go-playground/validator/v10"
 	en_translations "github.com/go-playground/validator/v10/translations/en"
 	"gorm.io/gorm"
 )
 
 type validation struct {
-  conn *gorm.DB
+	conn *gorm.DB
 }
 
 func NewValidation() *validation {
-  conn := config.DBConn()
-  db, err := gorm.Open(conn, &gorm.Config{})
-  if err != nil {
-    fmt.Println("error")
-  }
-  return &validation{
-    conn: db,
-  }
+	conn := config.DBConn()
+	db, err := gorm.Open(conn, &gorm.Config{})
+	if err != nil {
+		fmt.Println("error")
+	}
+	return &validation{
+		conn: db,
+	}
 }
 
 func (v *validation) Init() (*validator.Validate, ut.Translator) {
-  	translator := en.New()
+	translator := en.New()
 	uni := ut.New(translator, translator)
 
 	trans, _ := uni.GetTranslator("en")
@@ -103,5 +102,3 @@ func (v *validation) Struct(s interface{}) interface{} {
 	}
 	return nil
 }
-
-

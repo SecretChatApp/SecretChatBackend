@@ -33,6 +33,7 @@ func (s *Server) Initialize(config AppConfig) {
 	s.Router = mux.NewRouter()
 	s.InitializeAppConfig(config)
 	s.InitializeDB()
+	s.InitializeRoutes()
 }
 
 func (s *Server) InitializeCommand(config AppConfig) {
@@ -85,9 +86,7 @@ func (s *Server) Run() {
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
 		AllowCredentials: true,
-		AllowedHeaders:   []string{"*"},
 	})
-
 	handler := c.Handler(s.Router)
 	log.Fatal(http.ListenAndServe(":"+s.AppConfig.AppPort, handler))
 }

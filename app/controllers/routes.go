@@ -1,8 +1,5 @@
 package controllers
 
-import (
-)
-
-func (s *Server) InitializeRoutes () {
-
+func (s *Server) InitializeRoutes() {
+	s.Router.HandleFunc("/", s.Home).Methods("GET")
 }
