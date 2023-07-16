@@ -73,7 +73,7 @@ func (s *Server) InitializeDB() {
 
 func (s *Server) MigrateDB() {
 	for _, model := range models.RegisterModel() {
-		err := s.DB.AutoMigrate(model.Model)
+		err := s.DB.Debug().AutoMigrate(model.Model)
 		if err != nil {
 			log.Fatal(err)
 		}

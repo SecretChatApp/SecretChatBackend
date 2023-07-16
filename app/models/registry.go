@@ -5,5 +5,9 @@ type Model struct {
 }
 
 func RegisterModel() []Model {
-	return []Model{}
+	return []Model{
+		{Model: User{}},
+		{Model: ChatRoom{}},
+		{Model: Message{}},
+	}
 }
