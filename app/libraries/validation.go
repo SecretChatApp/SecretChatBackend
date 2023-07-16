@@ -85,7 +85,6 @@ func (c *validation) checkIsUnique(tablename interface{}, fieldname, fieldvalue 
 }
 
 func (v *validation) Struct(s interface{}) interface{} {
-	// fmt.Println("kene")
 	validate, trans := v.Init()
 	vErrors := make(map[string]interface{})
 

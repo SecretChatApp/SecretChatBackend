@@ -27,7 +27,7 @@ func (u *User) CreateUser(db *gorm.DB) (string, error) {
 	return u.ID, nil
 }
 
-func (u *User) GerUser(db *gorm.DB, email string) error {
+func (u *User) GetUser(db *gorm.DB, email string) error {
 	err := db.Debug().Model(&User{}).Where("email = ?", email).First(&u).Error
 	if err != nil {
 		return err
