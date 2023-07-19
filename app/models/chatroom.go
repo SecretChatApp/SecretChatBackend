@@ -28,7 +28,7 @@ func (c *ChatRoom) CreateChatRoom(db *gorm.DB) (string, error) {
 }
 
 func (c *ChatRoom) GetRoomInformation(id string, db *gorm.DB) error {
-	err := db.Debug().Where("chat_room.id = ?", id).Joins("User").Preload("Message", func(db *gorm.DB) *gorm.DB {
+	err := db.Debug().Model(&c).Where("chat_rooms.id = ?", id).Joins("User").Preload("Message", func(db *gorm.DB) *gorm.DB {
 		return db.Select([]string{"ChatRoomID", "Text", "Sender", "CreatedAt"}).Order("messages.created_at ASC")
 	}).First(&c).Error
 

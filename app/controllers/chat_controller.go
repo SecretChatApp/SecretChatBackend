@@ -5,11 +5,13 @@ import (
 	"backend/app/libraries"
 	"backend/app/models"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/gorilla/mux"
 )
 
 type InputChatroom struct {
@@ -111,9 +113,17 @@ func (s *Server) CreateChatroom(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) EditRoom(w http.ResponseWriter, r *http.Request) {
-	name, ok := r.URL.Query()["name"]
-	if !ok || len(name[0]) < 1 {
-		log.Println("url param name is missing")
+	// name, ok := r.URL.Query()["name"]
+	// if !ok || len(name[0]) < 1 {
+	// 	log.Println("url param name is missing")
+	// 	return
+	// }
+
+	params := mux.Vars(r)
+	objID := params["id"]
+
+	if len(objID) < 1 {
+		log.Println("url param id is missing")
 		return
 	}
 
@@ -132,7 +142,7 @@ func (s *Server) EditRoom(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	var chatroom models.ChatRoom
-	err1 := chatroom.GetRoomById(name[0], s.DB)
+	err1 := chatroom.GetRoomById(objID, s.DB)
 
 	if err1 != nil {
 		log.Println(err1)
@@ -154,15 +164,19 @@ func (s *Server) EditRoom(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) GetRoomInformation(w http.ResponseWriter, r *http.Request) {
-	name, ok := r.URL.Query()["name"]
+	param := mux.Vars(r)
+	objID := param["id"]
 
-	if !ok || len(name[0]) < 1 {
-		log.Println("url param name is missing")
+	fmt.Println(objID)
+
+	if len(objID) < 1 {
+		log.Println("url param id is missing")
 		return
 	}
 
 	var chatroom models.ChatRoom
-	chatroom.GetRoomInformation(name[0], s.DB)
+	// chatroom.GetRoomInformation(name[0], s.DB)
+	chatroom.GetRoomInformation(objID, s.DB)
 
 	responseInformation := ResponseRoomInformation{
 		OwnerName: chatroom.User.Name,

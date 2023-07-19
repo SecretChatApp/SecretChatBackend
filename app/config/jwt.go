@@ -1,6 +1,6 @@
 package config
 
-import "github.com/golang-jwt/jwt/v5"
+import "github.com/golang-jwt/jwt/v4"
 
 var JWT_KEY = []byte("secretapp")
 

@@ -1,0 +1,23 @@
+# air.toml
+
+# workling directory
+root = "."
+
+# Build command
+build_cmd = "go build -0 ./bin/main ./main.go"
+
+# Run command
+run_cmd = "./bin/main"
+
+# Watch directories
+[watcher]
+dirs = [
+    "."
+]
+
+[exclude]
+dirs = [
+    ".git"
+    "docker-compose.yml"
+]
+

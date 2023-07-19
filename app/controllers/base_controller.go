@@ -88,5 +88,6 @@ func (s *Server) Run() {
 		AllowCredentials: true,
 	})
 	handler := c.Handler(s.Router)
-	log.Fatal(http.ListenAndServe(":"+s.AppConfig.AppPort, handler))
+	log.Println("Starting server on port " + s.AppConfig.AppPort)
+	log.Println(http.ListenAndServe(":"+s.AppConfig.AppPort, handler))
 }
