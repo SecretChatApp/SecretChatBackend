@@ -4,33 +4,15 @@ import (
 	"backend/app/helpers"
 	"backend/app/libraries"
 	"backend/app/models"
+	chatservices "backend/app/services/chat_services"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
-
-type InputChatroom struct {
-	Title   string `json:"title" validate:"required"`
-	Subject string `json:"subject" validate:"required"`
-}
-
-type EditRequest struct {
-	Title   string
-	Subject string
-}
-
-type ResponseRoomInformation struct {
-	OwnerName string           `json:"owner_name"`
-	Title     string           `json:"title"`
-	Subject   string           `json:"subject"`
-	Messages  []models.Message `json:"messages"`
-	CreatedAt time.Time        `json:"created_at"`
-}
 
 func (s *Server) GetChatrooms(w http.ResponseWriter, r *http.Request) {
 	userInfo := r.Context().Value("userInfo").(string)
@@ -52,7 +34,7 @@ func (s *Server) GetChatrooms(w http.ResponseWriter, r *http.Request) {
 func (s *Server) CreateChatroom(w http.ResponseWriter, r *http.Request) {
 	userInfo := r.Context().Value("userInfo").(string)
 
-	var inputChatroom InputChatroom
+	var inputChatroom chatservices.InputChatroom
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&inputChatroom); err != nil {
 		response := map[string]interface{}{
@@ -127,7 +109,7 @@ func (s *Server) EditRoom(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var editRequest EditRequest
+	var editRequest chatservices.EditRequest
 
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&editRequest); err != nil {
@@ -178,7 +160,7 @@ func (s *Server) GetRoomInformation(w http.ResponseWriter, r *http.Request) {
 	// chatroom.GetRoomInformation(name[0], s.DB)
 	chatroom.GetRoomInformation(objID, s.DB)
 
-	responseInformation := ResponseRoomInformation{
+	responseInformation := chatservices.ResponseRoomInformation{
 		OwnerName: chatroom.User.Name,
 		Title:     chatroom.Title,
 		Subject:   chatroom.Subject,
@@ -214,4 +196,10 @@ func (s *Server) DeleteRoom(w http.ResponseWriter, r *http.Request) {
 
 	helpers.ResponseJSON(w, http.StatusOK, response)
 	return
+}
+
+func (s *Server) ServeWs() {
+	// upgrader := services.Upgrader
+
+	// upgrader.CheckOrigin = func ()
 }

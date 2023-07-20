@@ -1,7 +1,7 @@
 package app
 
 import (
-	"backend/app/controllers"
+	controllers "backend/app/controllers"
 	"backend/app/helpers"
 	"flag"
 	"log"

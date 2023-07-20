@@ -5,6 +5,7 @@ import (
 	"backend/app/helpers"
 	"backend/app/libraries"
 	"backend/app/models"
+	authservices "backend/app/services/auth_services"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -15,20 +16,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type UserInput struct {
-	Name            string `json:"name" validate:"required,gte=4"`
-	Email           string `json:"email" validate:"required,email,isunique=users-email"`
-	Password        string `json:"password" validate:"required,gte=4"`
-	ConfirmPassword string `json:"confirm_password" validate:"required,eqfield=Password" label:"Konfirmasi Password"`
-}
-
-type UserLogin struct {
-	Email    string `json:"email" validate:"required"`
-	Password string `json:"password" validate:"required"`
-}
-
 func (s *Server) Register(w http.ResponseWriter, r *http.Request) {
-	var userInput UserInput
+	var userInput authservices.UserInput
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&userInput); err != nil {
 		response := map[string]string{
@@ -84,7 +73,7 @@ func (s *Server) Register(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 
-	var userLogin UserLogin
+	var userLogin authservices.UserLogin
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&userLogin); err != nil {
 		response := map[string]interface{}{
