@@ -198,8 +198,22 @@ func (s *Server) DeleteRoom(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func (s *Server) ServeWs() {
-	// upgrader := services.Upgrader
+func (s *Server) ServeWs(wsServer *chatservices.WsServer, w http.ResponseWriter, r *http.Request) {
+	upgrader := chatservices.Upgrader
 
-	// upgrader.CheckOrigin = func ()
+	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
+
+	_, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	name, ok := r.URL.Query()["name"]
+
+	if !ok || len(name[0]) < 1 {
+		log.Println("url param name is missing")
+		return
+	}
+
 }
