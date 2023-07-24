@@ -203,7 +203,7 @@ func (s *Server) ServeWs(wsServer *chatservices.WsServer, w http.ResponseWriter,
 
 	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 
-	_, err := upgrader.Upgrade(w, r, nil)
+	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
 		return
@@ -216,4 +216,14 @@ func (s *Server) ServeWs(wsServer *chatservices.WsServer, w http.ResponseWriter,
 		return
 	}
 
+	room := wsServer.CreateRoom(name[0])
+
+	client := chatservices.NewClient(conn, wsServer, name[0], room)
+
+	room.Register <- client
+
+	go client.WritePump(s.DB)
+	go client.ReadPump(r, s.DB)
+
+	log.Println("Connect")
 }
