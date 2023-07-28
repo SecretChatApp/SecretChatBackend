@@ -1,8 +1,15 @@
 package controllers
 
-import "backend/app/middlewares"
+import (
+	"backend/app/middlewares"
+	chatservices "backend/app/services/chat_services"
+)
 
 func (s *Server) InitializeRoutes() {
+
+	WsServer := chatservices.NewWebSocketServer()
+	go WsServer.Run()
+
 	s.Router.HandleFunc("/", s.Home).Methods("GET")
 
 	// Auth
