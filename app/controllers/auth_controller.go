@@ -145,6 +145,8 @@ func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 
 			response := map[string]interface{}{
 				"message": "Login Berhasil",
+				"token":   token,
+				"user":    user,
 			}
 
 			helpers.ResponseJSON(w, http.StatusOK, response)

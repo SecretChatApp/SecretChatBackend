@@ -84,10 +84,12 @@ func (s *Server) MigrateDB() {
 func (s *Server) Run() {
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
 		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
 	})
+
 	handler := c.Handler(s.Router)
 	log.Println("Starting server on port " + s.AppConfig.AppPort)
-	log.Println(http.ListenAndServe(":"+s.AppConfig.AppPort, handler))
+	log.Fatal(http.ListenAndServe(":"+s.AppConfig.AppPort, handler))
 }
