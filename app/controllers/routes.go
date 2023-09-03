@@ -22,6 +22,7 @@ func (s *Server) InitializeRoutes() {
 	api.HandleFunc("/chatroom", s.CreateChatroom).Methods("POST")
 	api.HandleFunc("/chatroom/{id}", s.GetRoomInformation).Methods("GET")
 	api.HandleFunc("/edit/{id}", s.EditRoom).Methods("PUT")
+	api.HandleFunc("/delete/{id}", s.DeleteRoom).Methods("DELETE")
 	api.Use(middlewares.JWTMiddleware)
 
 }

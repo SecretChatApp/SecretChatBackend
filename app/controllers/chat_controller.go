@@ -177,14 +177,16 @@ func (s *Server) GetRoomInformation(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) DeleteRoom(w http.ResponseWriter, r *http.Request) {
-	name, ok := r.URL.Query()["name"]
-	if !ok || len(name[0]) < 1 {
-		log.Println("url param name is missing")
+	params := mux.Vars(r)
+	objID := params["id"]
+
+	if len(objID) < 1 {
+		log.Println("url param id is missing")
 		return
 	}
 
 	var chatroom models.ChatRoom
-	err := chatroom.RemoveChatRoom(name[0], s.DB)
+	err := chatroom.RemoveChatRoom(objID, s.DB)
 	if err != nil {
 		log.Print(err)
 		return
