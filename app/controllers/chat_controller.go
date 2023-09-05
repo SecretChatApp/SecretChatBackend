@@ -95,11 +95,6 @@ func (s *Server) CreateChatroom(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) EditRoom(w http.ResponseWriter, r *http.Request) {
-	// name, ok := r.URL.Query()["name"]
-	// if !ok || len(name[0]) < 1 {
-	// 	log.Println("url param name is missing")
-	// 	return
-	// }
 
 	params := mux.Vars(r)
 	objID := params["id"]
@@ -211,16 +206,17 @@ func (s *Server) ServeWs(wsServer *chatservices.WsServer, w http.ResponseWriter,
 		return
 	}
 
-	name, ok := r.URL.Query()["name"]
+	params := mux.Vars(r)
+	objID := params["id"]
 
-	if !ok || len(name[0]) < 1 {
-		log.Println("url param name is missing")
+	if len(objID) < 1 {
+		log.Println("url param id is missing")
 		return
 	}
 
-	room := wsServer.CreateRoom(name[0])
+	room := wsServer.CreateRoom(objID)
 
-	client := chatservices.NewClient(conn, wsServer, name[0], room)
+	client := chatservices.NewClient(conn, wsServer, objID, room)
 
 	room.Register <- client
 
