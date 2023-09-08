@@ -206,17 +206,16 @@ func (s *Server) ServeWs(wsServer *chatservices.WsServer, w http.ResponseWriter,
 		return
 	}
 
-	params := mux.Vars(r)
-	objID := params["id"]
+	name, ok := r.URL.Query()["id"]
 
-	if len(objID) < 1 {
-		log.Println("url param id is missing")
+	if !ok || len(name[0]) < 1 {
+		log.Println("url param name is missing")
 		return
 	}
 
-	room := wsServer.CreateRoom(objID)
+	room := wsServer.CreateRoom(name[0])
 
-	client := chatservices.NewClient(conn, wsServer, objID, room)
+	client := chatservices.NewClient(conn, wsServer, name[0], room)
 
 	room.Register <- client
 
