@@ -150,7 +150,6 @@ func (s *Server) GetRoomInformation(w http.ResponseWriter, r *http.Request) {
 		log.Println("url param id is missing")
 		return
 	}
-
 	var chatroom models.ChatRoom
 	// chatroom.GetRoomInformation(name[0], s.DB)
 	chatroom.GetRoomInformation(objID, s.DB)
@@ -192,6 +191,33 @@ func (s *Server) DeleteRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	helpers.ResponseJSON(w, http.StatusOK, response)
+	return
+}
+
+func (s *Server) GetMessagesByChatRoomId(w http.ResponseWriter, r *http.Request) {
+
+	params := mux.Vars(r)
+	objID := params["id"]
+
+	if len(objID) < 1 {
+		log.Println("url param id is missing")
+		return
+	}
+
+	var messageModel models.Message
+
+	messages, err := messageModel.GetAllMessagesByChatRoomId(s.DB, objID)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+
+	response := map[string]interface{}{
+		"data": messages,
+	}
+
+	helpers.ResponseJSON(w, http.StatusOK, response)
+
 	return
 }
 

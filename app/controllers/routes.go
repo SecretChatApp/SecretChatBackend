@@ -20,6 +20,7 @@ func (s *Server) InitializeRoutes() {
 	s.Router.HandleFunc("/chat", func(w http.ResponseWriter, r *http.Request) {
 		s.ServeWs(WsServer, w, r)
 	})
+	s.Router.HandleFunc("/chatroom/{id}", s.GetMessagesByChatRoomId).Methods("GET")
 
 	api := s.Router.PathPrefix("/api").Subrouter()
 	api.HandleFunc("/chatrooms", s.GetChatrooms).Methods("GET")

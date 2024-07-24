@@ -24,8 +24,9 @@ type Client struct {
 }
 
 type Message struct {
+	ID        string    `json:"id"`
 	Action    string    `json:"action"`
-	Message   string    `json:"message"`
+	Text      string    `json:"text"`
 	Target    string    `json:"target"`
 	Sender    string    `json:"sender"`
 	CreatedAt time.Time `json:"created_at"`

@@ -120,8 +120,7 @@ func (client *Client) HandleNewMessage(jsonMessage []byte, r *http.Request, db *
 		log.Println(err)
 	}
 
-	_, err := r.Cookie("token")
-
+	_, err := r.Cookie("access_token")
 	if err != nil {
 		message.Sender = "client"
 	} else {
@@ -134,7 +133,7 @@ func (client *Client) HandleNewMessage(jsonMessage []byte, r *http.Request, db *
 	var messageModel = models.Message{
 		ID:         uuid.New().String(),
 		ChatRoomID: message.Target,
-		Text:       message.Message,
+		Text:       message.Text,
 		Sender:     message.Sender,
 		CreatedAt:  message.CreatedAt,
 	}
